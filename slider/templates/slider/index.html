@@ -1,0 +1,216 @@
+{% extends "slider/base.html" %} {% load static %} {% block title %}Главная -
+Слайдер{% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'slider/css/slider.css' %}" />
+<link rel="stylesheet" href="{% static 'slider/css/custom.css' %}" />
+<link rel="stylesheet" href="{% static 'slider/css/media.css' %}" />
+{% endblock %} {% block content %}
+<header class="header">
+  <div class="container">
+    <div class="row align-items-center d-none d-sm-flex">
+      <div class="col-3">
+        <div class="logo">
+          <img
+            src="{% static 'slider/images/logo.svg' %}"
+            alt="Логотип"
+            height="64"
+          />
+        </div>
+      </div>
+
+      <div class="col-6">
+        <nav>
+          <ul class="nav justify-content-center text-uppercase">
+            <li class="nav-item">
+              <a class="nav-link" href="#features">Преимущества</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#gallery">Фотографии</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="col-3 text-end">
+        {% if user.is_authenticated %}
+        <a href="/admin/" class="btn btn-danger fw-bold text-uppercase">Выход</a>
+        {% else %}
+        <a href="/admin/" class="btn btn-danger fw-bold text-uppercase">Вход</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row align-items-center d-flex d-sm-none">
+      <div class="col-6 d-flex align-items-center">
+        <button class="burger-btn" id="burgerBtn">
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+          <span class="burger-line"></span>
+        </button>
+        <div class="logo ms-2">
+          <img
+            src="{% static 'slider/images/logo.svg' %}"
+            alt="Логотип"
+            height="40"
+          />
+        </div>
+      </div>
+
+      <div class="col-6 text-end">
+        {% if user.is_authenticated %}
+        <a href="/admin/" class="btn btn-danger fw-bold text-uppercase">Выход</a>
+        {% else %}
+        <a href="/admin/" class="btn btn-danger fw-bold text-uppercase">Вход</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <nav>
+        <ul class="mobile-nav">
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" href="#features">Преимущества</a>
+          </li>
+          <li class="mobile-nav-item">
+            <a class="mobile-nav-link" href="#gallery">Фотографии</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<section class="info-section py-5">
+  <div class="container text-center">
+    <h1 class="info-title">Космическое агентство</h1>
+    <div class="info-text">
+      <p class="lead">
+        Национальное управление по аэронавтике и исследованию космического
+        пространства — ведомство, относящееся к федеральному правительству США и
+        подчиняющееся непосредственно президенту США.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="features" class="features-section py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-2 order-1 mb-4 mb-lg-0">
+        <div class="row g-4">
+          <div class="col-6">
+            <div class="feature-item text-center">
+              <div class="feature-icon mb-5">
+                <img
+                  src="{% static 'slider/images/space.svg' %}"
+                  alt="Иконка"
+                  height="48"
+                />
+              </div>
+              <h3 class="feature-title">Спейс шаттлы — пилотируемые корабли</h3>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="feature-item text-center">
+              <div class="feature-icon mb-5">
+                <img
+                  src="{% static 'slider/images/telescope.svg' %}"
+                  alt="Иконка"
+                  height="48"
+                />
+              </div>
+              <h3 class="feature-title">Лучшее телескопическое оборудование</h3>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="feature-item text-center">
+              <div class="feature-icon mb-5">
+                <img
+                  src="{% static 'slider/images/moon.svg' %}"
+                  alt="Иконка"
+                  height="48"
+                />
+              </div>
+              <h3 class="feature-title">
+                Исследовательские станции на Луне — шаг к новым открытиям!
+              </h3>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="feature-item text-center">
+              <div class="feature-icon mb-5">
+                <img
+                  src="{% static 'slider/images/medal.svg' %}"
+                  alt="Иконка"
+                  height="48"
+                />
+              </div>
+              <h3 class="feature-title">
+                Золотая медаль по научным исследованиям
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 order-lg-1 order-2">
+        <div class="feature-image">
+          <img
+            src="{% static 'slider/images/banner.png' %}"
+            alt="О нас"
+            class="img-fluid rounded"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery" class="slider-section pt-5 pb-5">
+  <div class="container">
+    <h2 class="section-title">Фотогалерея</h2>
+
+    {% if slides %}
+    <div
+      id="slider-data"
+      data-slides='[
+                 {% for slide in slides %}
+                     {
+                         "url": "{{ slide.image.url }}",
+                         "title": "{{ slide.title|escapejs }}"
+                     }{% if not forloop.last %},{% endif %}
+                 {% endfor %}
+                 ]'
+    ></div>
+
+    <div class="slider-container">
+      <div class="slider-for">
+        {% for slide in slides %}
+        <div>
+          <img src="{{ slide.image.url }}" alt="{{ slide.title }}" />
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="slider-nav">
+        {% for slide in slides %}
+        <div>
+          <img src="{{ slide.image.url }}" alt="{{ slide.title }}" />
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center">
+      В админке еще нет слайдов.
+      <a href="/admin/slider/slide/add/" class="alert-link">Добавьте слайды</a>.
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %} {% block extra_js %}
+<script src="{% static 'slider/js/slider.js' %}"></script>
+{% endblock %}
